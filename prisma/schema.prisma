@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Request {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  requesterId String // Clerk User ID
+  title       String
+  customer    String?
+  description String?
+  type        Type_of_Request @default(Manufacturing_Drawing)
+  isCompleted Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+// enum Role {
+//   Sales
+//   Admin
+//   Engineer
+// }
+
+enum Type_of_Request {
+  Manufacturing_Drawing
+  Basic_Drawing
+  Technical_Enquiry
+  Drawing_Update
+  Other
+}
