@@ -109,7 +109,7 @@ export function CreateRequestForm() {
                         <FormItem>
                             <FormLabel>Customer</FormLabel>
                             <FormControl>
-                                <Input placeholder='Customer' {...field} />
+                                <Input placeholder='Customer' {...field} value={field.value || ''} />
                             </FormControl>
 
                             <FormMessage />
@@ -123,7 +123,11 @@ export function CreateRequestForm() {
                         <FormItem>
                             <FormLabel>Description</FormLabel>
                             <FormControl>
-                                <Textarea placeholder='Please include all information for the request.' {...field} />
+                                <Textarea
+                                    placeholder='Please include all information for the request.'
+                                    {...field}
+                                    value={field.value || ''}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

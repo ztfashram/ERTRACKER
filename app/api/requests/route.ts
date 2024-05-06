@@ -3,27 +3,6 @@ import prisma from '@/prisma/client'
 import { auth } from '@clerk/nextjs/server'
 import { createRequestSchema } from '../../validationSchema'
 
-// export async function GET() {
-//     try {
-//         const res = await fetch(process.env.URL + '/api/requests/', {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             cache: 'no-store',
-//             next: { tags: ['requests'] },
-//         })
-//         if (!res.ok) {
-//             console.log('failed at ' + process.env.URL + '/api/requests/')
-//             throw new Error('Failed to fetch data. Server returned status: ' + res.status)
-//         }
-//         const data = await res.json()
-//         return data
-//     } catch (error) {
-//         console.error(error)
-//         return null
-//     }
-// }
 export async function POST(req: NextRequest) {
     try {
         const { userId } = auth()
@@ -44,7 +23,7 @@ export async function POST(req: NextRequest) {
         const newRequest = await prisma.request.create({
             data: {
                 ...requestBody,
-                createAt: new Date(),
+                createdAt: new Date(),
                 updatedAt: new Date(),
             },
         })
