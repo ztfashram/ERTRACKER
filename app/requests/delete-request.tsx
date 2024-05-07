@@ -1,20 +1,13 @@
-const deleteRequest = async (id: String) => {
-    try {
-        const res = await fetch(`http://127.0.0.1:3000/api/requests/${id}`, {
-            method: "DELETE",
-            mode: "no-cors",
-        });
-        console.log(
-            "trying to delete through: ",
-            process.env.URL + `/api/requests/${id}`
-        );
+'use server'
+import prisma from '@/prisma/client'
+import { notFound } from 'next/navigation'
 
-        if (res.ok) {
-            console.log("Delete successful");
-        }
-    } catch (error) {
-        console.log("Error: ", error);
+const deleteRequest = async (id: string) => {
+    const request = await prisma.request.delete({
+        where: { id },
+    })
+    if (request === null) {
+        return notFound()
     }
-};
-
-export default deleteRequest;
+}
+export default deleteRequest
