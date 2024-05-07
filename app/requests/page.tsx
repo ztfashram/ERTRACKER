@@ -1,5 +1,5 @@
 import prisma from "@/prisma/client";
-import RequestsTable from "./RequestsTable";
+import RequestsTable from "./requests-table";
 import { columns } from "./columns";
 import { RequestSchema } from "../validationSchema";
 import { getUsernames } from "@/utils/getUsernames";
@@ -15,7 +15,7 @@ async function getRequests() {
 }
 
 async function loader() {
-    const requests: RequestSchema[] = await getRequests();
+    const requests = await getRequests();
     const userIds = requests.map((req) => req.requesterId);
     const userMap = await getUsernames(userIds);
 
