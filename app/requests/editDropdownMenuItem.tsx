@@ -1,19 +1,18 @@
 'use client'
 
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { deleteRequest } from '@/app/requests/delete-request'
 import { useRouter } from 'next/navigation'
 
-export function DeleteDropdownMenuItem({ id }: { id: string }) {
+export function EditDropdownMenuItem({ id }: { id: string }) {
     const router = useRouter()
+    console.log(id)
     return (
         <DropdownMenuItem
-            onClick={async () => {
-                await deleteRequest(id)
-                router.refresh()
+            onClick={() => {
+                router.push(`/requests/${id}/edit`)
             }}
         >
-            Delete
+            Edit
         </DropdownMenuItem>
     )
 }
