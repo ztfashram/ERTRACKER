@@ -7,13 +7,11 @@ import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { DeleteDropdownMenuItem } from './deleteDropdownMenuItem'
-import { EditDropdownMenuItem } from './editDropdownMenuItem'
-import { useRouter } from 'next/navigation'
+import { DeleteDropdownMenuItem } from './_components/deleteDropdownMenuItem'
+import { EditDropdownMenuItem } from './_components/editDropdownMenuItem'
 
 type EnrichedRequests = Request & { username: string }
 

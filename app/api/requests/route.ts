@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import prisma from '@/prisma/client'
 import { auth } from '@clerk/nextjs/server'
-import { createRequestSchema } from '../../validationSchema'
+import { addRequestSchema } from '@/app/validationSchema'
 
 export async function POST(req: NextRequest) {
     try {
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
         const requestBody = { ...body, requesterId: userId }
 
-        const validation = createRequestSchema.safeParse(requestBody)
+        const validation = addRequestSchema.safeParse(requestBody)
         if (!validation.success) {
             return NextResponse.json(validation.error.errors, { status: 400 })
         }
