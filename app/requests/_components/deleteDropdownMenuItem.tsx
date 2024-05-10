@@ -1,7 +1,7 @@
 'use client'
 
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { deleteRequest } from '@/app/requests/_actions/delete-request'
+import { deleteRequest } from '@/app/requests/_actions/requests'
 import { useRouter } from 'next/navigation'
 
 export function DeleteDropdownMenuItem({ id }: { id: string }) {

@@ -11,13 +11,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { Type_of_Request } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import { Request } from '@prisma/client'
-import { baseRequestSchema } from '@/app/validationSchema'
+import { baseRequestSchema, BaseRequestFormValues } from '@/app/validationSchema'
 import Spinner from '@/components/spinner'
-import { useState } from 'react'
-import { addRequest } from '@/app/requests/_actions/add-request'
-import { editRequest } from '@/app/requests/_actions/edit-request'
-
-type BaseRequestFormValues = z.infer<typeof baseRequestSchema>
+import { addRequest, updateRequest } from '@/app/requests/_actions/requests'
 
 const defaultValues: Partial<BaseRequestFormValues> = {
     type: 'Manufacturing_Drawing',
@@ -29,7 +25,6 @@ const defaultValues: Partial<BaseRequestFormValues> = {
 
 export function RequestForm({ request }: { request?: Request | null }) {
     const router = useRouter()
-    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const form = useForm<BaseRequestFormValues>({
         resolver: zodResolver(baseRequestSchema),
@@ -37,24 +32,9 @@ export function RequestForm({ request }: { request?: Request | null }) {
         mode: 'onChange',
     })
 
-    const onSubmit = async (data: BaseRequestFormValues) => {
-        try {
-            setIsSubmitting(true)
-            await fetch('/api/requests', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            })
-            router.push('/requests')
-            router.refresh()
-        } catch (error) {
-            setIsSubmitting(false)
-            console.log('Error: ', error)
-        }
-    }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+            <form onSubmit={form.handleSubmit(addRequest)} className='space-y-6'>
                 <FormField
                     control={form.control}
                     name='type'
@@ -140,8 +120,8 @@ export function RequestForm({ request }: { request?: Request | null }) {
                     <Button variant='ghost' onClick={() => router.back()}>
                         Cancel
                     </Button>
-                    <Button type='submit' disabled={isSubmitting}>
-                        Submit {isSubmitting && <Spinner />}
+                    <Button type='submit' disabled={form.formState.isSubmitting}>
+                        Submit {form.formState.isSubmitting && <Spinner />}
                     </Button>
                 </div>
             </form>

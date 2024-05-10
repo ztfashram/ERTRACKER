@@ -12,7 +12,7 @@ import { Type_of_Request } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import { baseRequestSchema } from '@/app/validationSchema'
 import Spinner from '@/components/spinner'
-import { useState } from 'react'
+import { addRequest } from '../_actions/requests'
 
 type BaseRequestFormValues = z.infer<typeof baseRequestSchema>
 
@@ -26,7 +26,6 @@ const defaultValues: Partial<BaseRequestFormValues> = {
 
 export function CreateRequestForm() {
     const router = useRouter()
-    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const form = useForm<BaseRequestFormValues>({
         resolver: zodResolver(baseRequestSchema),
@@ -35,20 +34,9 @@ export function CreateRequestForm() {
     })
 
     const onSubmit = async (data: BaseRequestFormValues) => {
-        try {
-            setIsSubmitting(true)
-            await fetch('/api/requests', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            })
-            router.push('/requests')
-            router.refresh()
-        } catch (error) {
-            setIsSubmitting(false)
-            console.log('Error: ', error)
-        }
+        const task = await addRequest(data)
     }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -137,8 +125,8 @@ export function CreateRequestForm() {
                     <Button variant='ghost' onClick={() => router.back()}>
                         Cancel
                     </Button>
-                    <Button type='submit' disabled={isSubmitting}>
-                        Submit {isSubmitting && <Spinner />}
+                    <Button type='submit' disabled={form.formState.isSubmitting}>
+                        Submit {form.formState.isSubmitting && <Spinner />}
                     </Button>
                 </div>
             </form>
