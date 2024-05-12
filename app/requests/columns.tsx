@@ -7,11 +7,13 @@ import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { DeleteDropdownMenuItem } from './_components/deleteDropdownMenuItem'
+import { DeleteAlertDialog } from './_components/deleteAlertDialog'
 import { EditDropdownMenuItem } from './_components/editDropdownMenuItem'
+import { AlertDialog, AlertDialogTrigger } from '@radix-ui/react-alert-dialog'
 
 type EnrichedRequests = Request & { username: string }
 
@@ -74,19 +76,26 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
         cell: ({ row }) => {
             const request = row.original
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
-                            <span className='sr-only'>Open menu</span>
-                            <MoreHorizontal className='h-4 w-4' />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align='end'>
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <EditDropdownMenuItem id={request.id} />
-                        <DeleteDropdownMenuItem id={request.id} />
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <AlertDialog>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant='ghost' className='h-8 w-8 p-0'>
+                                <span className='sr-only'>Open menu</span>
+                                <MoreHorizontal className='h-4 w-4' />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align='end'>
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <EditDropdownMenuItem id={request.id} />
+                            <AlertDialogTrigger className='w-full '>
+                                <DropdownMenuItem className='focus:bg-destructive focus:text-destructive-foreground text-red-500'>
+                                    Delete
+                                </DropdownMenuItem>
+                            </AlertDialogTrigger>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <DeleteAlertDialog id={request.id} />
+                </AlertDialog>
             )
         },
     },
