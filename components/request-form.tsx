@@ -1,6 +1,5 @@
 'use client'
 
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
@@ -14,6 +13,7 @@ import { Request } from '@prisma/client'
 import { baseRequestSchema, BaseRequestFormValues } from '@/app/validationSchema'
 import Spinner from '@/components/spinner'
 import { addRequest, updateRequest } from '@/app/requests/_actions/requests'
+import { testUpdate } from '@/app/requests/[id]/edit/testUpdate'
 
 export function RequestForm({ request }: { request: Request | null }) {
     const router = useRouter()
@@ -29,10 +29,10 @@ export function RequestForm({ request }: { request: Request | null }) {
                   isCompleted: false,
               }
             : {
-                  type: request?.type,
-                  title: request?.title as Type_of_Request,
-                  customer: request?.customer,
-                  description: request?.description,
+                  type: request?.type as Type_of_Request,
+                  title: request?.title,
+                  customer: request?.customer ?? '',
+                  description: request?.description ?? '',
                   isCompleted: request?.isCompleted,
               }
     const form = useForm<BaseRequestFormValues>({
@@ -49,13 +49,13 @@ export function RequestForm({ request }: { request: Request | null }) {
     }
 
     const handleTest = async () => {
-        const id = '66416766e1612cf6ebb237bf'
+        const id = request?.id as string
         const data = {
-            type: Type_of_Request.Manufacturing_Drawing,
-            title: 'test EDIT from handleTest',
-            description: 'test description',
+            type: Type_of_Request.Other,
+            title: 'EDIT from handleTest',
         }
-        await updateRequest(id, data)
+        await testUpdate(id, data)
+        // await updateRequest(id, data)
     }
     return (
         <Form {...form}>
@@ -148,11 +148,11 @@ export function RequestForm({ request }: { request: Request | null }) {
                     <Button type='submit' disabled={form.formState.isSubmitting}>
                         Save {form.formState.isSubmitting && <Spinner />}
                     </Button>
-                    <Button variant='outline' onClick={handleTest}>
-                        Click Me
-                    </Button>
                 </div>
             </form>
+            <Button variant='outline' onClick={handleTest}>
+                Click Me
+            </Button>
         </Form>
     )
 }

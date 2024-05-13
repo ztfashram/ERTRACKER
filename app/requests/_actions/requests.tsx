@@ -43,12 +43,9 @@ export async function updateRequest(id: string, data: unknown) {
     }
     const result = editRequestSchema.safeParse(data)
     if (!result.success) {
-        return
-        {
-            result.error?.errors
-        }
+        return result.error.format()
     }
-
+    console.log('data received for update request: ', result.data)
     await prisma.request.update({
         where: { id },
         data: { ...result.data },
