@@ -36,20 +36,25 @@ export async function addRequest(data: BaseRequestFormValues) {
     redirect('/requests')
 }
 
-export async function updateRequest(data: EditRequestSchemaValues) {
-    const id = data._id
+export async function updateRequest(id: string, data: unknown) {
     const { userId } = auth()
     if (!userId) {
         return NextResponse.json({ error: 'Unauthrozied' }, { status: 401 })
     }
     const result = editRequestSchema.safeParse(data)
     if (!result.success) {
-        return NextResponse.json(result.error.errors, { status: 400 })
+        return
+        {
+            result.error?.errors
+        }
     }
 
     await prisma.request.update({
         where: { id },
+        data: { ...result.data },
     })
+    revalidatePath('/requests')
+    redirect('/requests')
 }
 
 export async function deleteRequest(id: string) {

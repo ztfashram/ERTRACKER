@@ -34,7 +34,7 @@ export function CreateRequestForm() {
     })
 
     const onSubmit = async (data: BaseRequestFormValues) => {
-        const task = await addRequest(data)
+        await addRequest(data)
     }
 
     return (

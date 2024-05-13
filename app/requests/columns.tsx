@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DeleteAlertDialog } from './_components/deleteAlertDialog'
 import { EditDropdownMenuItem } from './_components/editDropdownMenuItem'
-import { AlertDialog, AlertDialogTrigger } from '@radix-ui/react-alert-dialog'
+import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 
 type EnrichedRequests = Request & { username: string }
 

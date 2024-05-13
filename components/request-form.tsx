@@ -15,26 +15,51 @@ import { baseRequestSchema, BaseRequestFormValues } from '@/app/validationSchema
 import Spinner from '@/components/spinner'
 import { addRequest, updateRequest } from '@/app/requests/_actions/requests'
 
-const defaultValues: Partial<BaseRequestFormValues> = {
-    type: 'Manufacturing_Drawing',
-    title: '',
-    customer: '',
-    description: '',
-    isCompleted: false,
-}
-
-export function RequestForm({ request }: { request?: Request | null }) {
+export function RequestForm({ request }: { request: Request | null }) {
     const router = useRouter()
+    const isAddRequest = !request?.id
 
+    const defaultValues =
+        request == null
+            ? {
+                  type: Type_of_Request.Manufacturing_Drawing,
+                  title: '',
+                  customer: '',
+                  description: '',
+                  isCompleted: false,
+              }
+            : {
+                  type: request?.type,
+                  title: request?.title as Type_of_Request,
+                  customer: request?.customer,
+                  description: request?.description,
+                  isCompleted: request?.isCompleted,
+              }
     const form = useForm<BaseRequestFormValues>({
         resolver: zodResolver(baseRequestSchema),
-        defaultValues,
-        mode: 'onChange',
+        defaultValues: defaultValues,
+        mode: 'onSubmit',
     })
 
+    const onSubmit = (data: BaseRequestFormValues) => {
+        console.log('isAddRequest: ', isAddRequest)
+
+        const submitData = isAddRequest ? { ...data } : data
+        const task = isAddRequest ? addRequest(data) : updateRequest(request.id, data)
+    }
+
+    const handleTest = async () => {
+        const id = '66416766e1612cf6ebb237bf'
+        const data = {
+            type: Type_of_Request.Manufacturing_Drawing,
+            title: 'test EDIT from handleTest',
+            description: 'test description',
+        }
+        await updateRequest(id, data)
+    }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(addRequest)} className='space-y-6'>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
                 <FormField
                     control={form.control}
                     name='type'
@@ -121,7 +146,10 @@ export function RequestForm({ request }: { request?: Request | null }) {
                         Cancel
                     </Button>
                     <Button type='submit' disabled={form.formState.isSubmitting}>
-                        Submit {form.formState.isSubmitting && <Spinner />}
+                        Save {form.formState.isSubmitting && <Spinner />}
+                    </Button>
+                    <Button variant='outline' onClick={handleTest}>
+                        Click Me
                     </Button>
                 </div>
             </form>
