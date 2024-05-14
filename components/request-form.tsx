@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -13,7 +13,6 @@ import { Request } from '@prisma/client'
 import { baseRequestSchema, BaseRequestFormValues } from '@/app/validationSchema'
 import Spinner from '@/components/spinner'
 import { addRequest, updateRequest } from '@/app/requests/_actions/requests'
-import { testUpdate } from '@/app/requests/[id]/edit/testUpdate'
 
 export function RequestForm({ request }: { request: Request | null }) {
     const router = useRouter()
@@ -41,22 +40,14 @@ export function RequestForm({ request }: { request: Request | null }) {
         mode: 'onSubmit',
     })
 
-    const onSubmit = (data: BaseRequestFormValues) => {
-        console.log('isAddRequest: ', isAddRequest)
-
-        const submitData = isAddRequest ? { ...data } : data
-        const task = isAddRequest ? addRequest(data) : updateRequest(request.id, data)
-    }
-
-    const handleTest = async () => {
-        const id = request?.id as string
-        const data = {
-            type: Type_of_Request.Other,
-            title: 'EDIT from handleTest',
+    const onSubmit: SubmitHandler<Partial<BaseRequestFormValues>> = async (data) => {
+        const result = baseRequestSchema.safeParse(data)
+        if (!result.success) {
+            return result.error.format()
         }
-        await testUpdate(id, data)
-        // await updateRequest(id, data)
+        const task = isAddRequest ? await addRequest(data) : await updateRequest(request.id, data)
     }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -150,9 +141,6 @@ export function RequestForm({ request }: { request: Request | null }) {
                     </Button>
                 </div>
             </form>
-            <Button variant='outline' onClick={handleTest}>
-                Click Me
-            </Button>
         </Form>
     )
 }

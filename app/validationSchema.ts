@@ -9,10 +9,3 @@ export const baseRequestSchema = z.object({
     isCompleted: z.boolean().default(false),
 })
 export type BaseRequestFormValues = z.infer<typeof baseRequestSchema>
-
-export const editRequestSchema = baseRequestSchema.extend({
-    _id: z.string(),
-    requesterId: z.string(),
-})
-
-export type EditRequestSchemaValues = z.infer<typeof editRequestSchema>

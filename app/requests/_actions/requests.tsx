@@ -1,19 +1,14 @@
 'use server'
 
 import prisma from '@/prisma/client'
-import {
-    baseRequestSchema,
-    BaseRequestFormValues,
-    editRequestSchema,
-    EditRequestSchemaValues,
-} from '@/app/validationSchema'
+import { baseRequestSchema } from '@/app/validationSchema'
 import { revalidatePath } from 'next/cache'
 import { notFound } from 'next/navigation'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
-export async function addRequest(data: BaseRequestFormValues) {
+export async function addRequest(data: unknown) {
     const { userId } = auth()
     if (!userId) {
         return NextResponse.json({ error: 'Unauthrozied' }, { status: 401 })
@@ -41,14 +36,14 @@ export async function updateRequest(id: string, data: unknown) {
     if (!userId) {
         return NextResponse.json({ error: 'Unauthrozied' }, { status: 401 })
     }
-    const result = editRequestSchema.safeParse(data)
+    const result = baseRequestSchema.safeParse(data)
     if (!result.success) {
         return result.error.format()
     }
-    console.log('data received for update request: ', result.data)
+
     await prisma.request.update({
         where: { id },
-        data: { ...result.data },
+        data: { ...(data as Object) },
     })
     revalidatePath('/requests')
     redirect('/requests')

@@ -1,4 +1,4 @@
-import { CreateRequestForm } from '@/app/requests/new/create-request-form'
+import { RequestForm } from '@/components/request-form'
 import { Separator } from '@/components/ui/separator'
 
 export default function NewRequestPage() {
@@ -9,7 +9,7 @@ export default function NewRequestPage() {
                 <p className='text-sm text-muted-foreground'>Describe existing problem or expectations:</p>
             </div>
             <Separator className='w-[600px]' />
-            <CreateRequestForm />
+            <RequestForm request={null} />
         </div>
     )
 }
