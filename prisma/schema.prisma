@@ -20,16 +20,10 @@ model Request {
   customer    String?
   description String?
   type        Type_of_Request @default(Manufacturing_Drawing)
-  isCompleted Boolean         @default(false)
+  status      Status          @default(Open)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 }
-
-// enum Role {
-//   Sales
-//   Admin
-//   Engineer
-// }
 
 enum Type_of_Request {
   Manufacturing_Drawing
@@ -37,4 +31,11 @@ enum Type_of_Request {
   Technical_Enquiry
   Drawing_Update
   Other
+}
+
+enum Status {
+  Open
+  In_Progress
+  Completed
+  Cancelled
 }

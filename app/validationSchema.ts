@@ -1,4 +1,4 @@
-import { Type_of_Request } from '@prisma/client'
+import { Type_of_Request, Status } from '@prisma/client'
 import { z } from 'zod'
 
 export const baseRequestSchema = z.object({
@@ -6,6 +6,6 @@ export const baseRequestSchema = z.object({
     customer: z.string().optional(),
     description: z.string().optional(),
     type: z.nativeEnum(Type_of_Request).default(Type_of_Request.Manufacturing_Drawing),
-    isCompleted: z.boolean().default(false),
+    status: z.nativeEnum(Status).default(Status.Open),
 })
 export type BaseRequestFormValues = z.infer<typeof baseRequestSchema>

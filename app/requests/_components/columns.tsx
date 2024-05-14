@@ -11,8 +11,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { DeleteAlertDialog } from './_components/deleteAlertDialog'
-import { EditDropdownMenuItem } from './_components/editDropdownMenuItem'
+import { DeleteAlertDialog } from './deleteAlertDialog'
+import { EditDropdownMenuItem } from './editDropdownMenuItem'
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 
 type EnrichedRequests = Request & { username: string }
@@ -36,10 +36,12 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
     {
         accessorKey: 'type',
         header: 'Type',
+        cell: ({ row }) => <div className=''>{(row.getValue('type') as string).replace('_', ' ')}</div>,
     },
     {
-        accessorKey: 'isCompleted',
-        header: 'Is Completed',
+        accessorKey: 'status',
+        header: 'Status',
+        cell: ({ row }) => <div className=''>{(row.getValue('status') as string).replace('_', ' ')}</div>,
     },
     {
         accessorKey: 'username',
