@@ -133,64 +133,73 @@ export function RequestForm({ request }: { request: Request | null }) {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name='status'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Status</FormLabel>
-                            <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className='grid grid-cols-4 gap-4'
-                            >
-                                <div>
-                                    <RadioGroupItem value={Status.Open} id='open' className='peer sr-only' />
-                                    <Label
-                                        htmlFor='open'
-                                        className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
-                                    >
-                                        {Status.Open}
-                                    </Label>
-                                </div>
-                                <div>
-                                    <RadioGroupItem value={Status.Completed} id='completed' className='peer sr-only' />
-                                    <Label
-                                        htmlFor='completed'
-                                        className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-green-600 [&:has([data-state=checked])]:border-primary'
-                                    >
-                                        {Status.Completed}
-                                    </Label>
-                                </div>
-                                <div>
-                                    <RadioGroupItem
-                                        value={Status.In_Progress}
-                                        id='in_progress'
-                                        className='peer sr-only'
-                                    />
-                                    <Label
-                                        htmlFor='in_progress'
-                                        className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-orange-600 [&:has([data-state=checked])]:border-primary'
-                                    >
-                                        {Status.In_Progress}
-                                    </Label>
-                                </div>
-                                <div>
-                                    <RadioGroupItem value={Status.Cancelled} id='cancelled' className='peer sr-only' />
-                                    <Label
-                                        htmlFor='cancelled'
-                                        className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-red-600 [&:has([data-state=checked])]:border-primary'
-                                    >
-                                        {Status.Cancelled}
-                                    </Label>
-                                </div>
-                            </RadioGroup>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-                <div className='flex justify-between space-x-2 pb-6'>
+                {!isAddRequest && (
+                    <FormField
+                        control={form.control}
+                        name='status'
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Status</FormLabel>
+                                <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className='grid grid-cols-4 gap-4'
+                                >
+                                    <div>
+                                        <RadioGroupItem value={Status.Open} id='open' className='peer sr-only' />
+                                        <Label
+                                            htmlFor='open'
+                                            className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary'
+                                        >
+                                            {Status.Open}
+                                        </Label>
+                                    </div>
+                                    <div>
+                                        <RadioGroupItem
+                                            value={Status.Completed}
+                                            id='completed'
+                                            className='peer sr-only'
+                                        />
+                                        <Label
+                                            htmlFor='completed'
+                                            className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-green-600 peer-data-[state=checked]:text-primary-foreground [&:has([data-state=checked])]:border-primary'
+                                        >
+                                            {Status.Completed}
+                                        </Label>
+                                    </div>
+                                    <div>
+                                        <RadioGroupItem
+                                            value={Status.In_Progress}
+                                            id='in_progress'
+                                            className='peer sr-only'
+                                        />
+                                        <Label
+                                            htmlFor='in_progress'
+                                            className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-orange-600 peer-data-[state=checked]:text-primary-foreground [&:has([data-state=checked])]:border-primary'
+                                        >
+                                            {Status.In_Progress}
+                                        </Label>
+                                    </div>
+                                    <div>
+                                        <RadioGroupItem
+                                            value={Status.Cancelled}
+                                            id='cancelled'
+                                            className='peer sr-only'
+                                        />
+                                        <Label
+                                            htmlFor='cancelled'
+                                            className='flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-red-600 peer-data-[state=checked]:text-primary-foreground [&:has([data-state=checked])]:border-primary'
+                                        >
+                                            {Status.Cancelled}
+                                        </Label>
+                                    </div>
+                                </RadioGroup>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
+                <div className='flex justify-between space-x-2 py-6'>
                     <Button variant='outline' onClick={() => router.back()}>
                         Cancel
                     </Button>
@@ -198,10 +207,12 @@ export function RequestForm({ request }: { request: Request | null }) {
                         Save {form.formState.isSubmitting && <Spinner />}
                     </Button>
                 </div>
-                <div className='text-center text-nowrap'>
-                    Last updated at
-                    <span className='font-bold'> {request && request.updatedAt.toLocaleDateString('en-AU')}</span>
-                </div>
+                {!isAddRequest && (
+                    <div className='text-center text-nowrap'>
+                        Last updated at
+                        <span className='font-bold'> {request && request.updatedAt.toLocaleDateString('en-AU')}</span>
+                    </div>
+                )}
             </form>
         </Form>
     )

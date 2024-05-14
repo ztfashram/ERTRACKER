@@ -14,6 +14,8 @@ import {
 import { DeleteAlertDialog } from './deleteAlertDialog'
 import { EditDropdownMenuItem } from './editDropdownMenuItem'
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { cn } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 
 type EnrichedRequests = Request & { username: string }
 
@@ -41,7 +43,21 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
     {
         accessorKey: 'status',
         header: 'Status',
-        cell: ({ row }) => <div className=''>{(row.getValue('status') as string).replace('_', ' ')}</div>,
+        cell: ({ row }) => {
+            const status = (row.getValue('status') as string).replace('_', ' ')
+            function bgColor(status: string) {
+                if (status === 'Cancelled') {
+                    return 'bg-red-500 hover:bg-red-500/80'
+                }
+                if (status === 'In Progress') {
+                    return 'bg-orange-500 hover:bg-orange-500/80'
+                }
+                if (status === 'Completed') {
+                    return 'bg-green-500 hover:bg-green-500/80'
+                }
+            }
+            return <Badge className={bgColor(status)}>{status}</Badge>
+        },
     },
     {
         accessorKey: 'username',
