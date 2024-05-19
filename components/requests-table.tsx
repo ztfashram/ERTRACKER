@@ -1,9 +1,23 @@
 'use client'
 import React from 'react'
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel } from '@tanstack/react-table'
+import {
+    ColumnDef,
+    ColumnFiltersState,
+    SortingState,
+    VisibilityState,
+    flexRender,
+    getCoreRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    getFilteredRowModel,
+    getFacetedRowModel,
+    getFacetedUniqueValues,
+    useReactTable,
+} from '@tanstack/react-table'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { RequestsTablePagination } from '@/components/requests-table-pagination'
+import { RequestTablePagination } from '@/components/request-table-pagination'
+import { RequestTableToolbar } from '@/components/request-table-toolbar'
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -11,17 +25,35 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function RequestsTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const [sorting, setSorting] = React.useState<SortingState>([])
+
     const table = useReactTable({
         data,
         columns,
+        state: {
+            sorting,
+            columnVisibility,
+            columnFilters,
+        },
+        enableRowSelection: true,
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFacetedRowModel: getFacetedRowModel(),
+        getFacetedUniqueValues: getFacetedUniqueValues(),
     })
 
     if (data.length === 0) return <p>No requests found</p>
 
     return (
         <div className='space-y-4'>
+            <RequestTableToolbar table={table} />
             <div className='rounded-md border'>
                 <Table>
                     <TableHeader>
@@ -60,7 +92,7 @@ export function RequestsTable<TData, TValue>({ columns, data }: DataTableProps<T
                     </TableBody>
                 </Table>
             </div>
-            <RequestsTablePagination table={table} />
+            <RequestTablePagination table={table} />
         </div>
     )
 }

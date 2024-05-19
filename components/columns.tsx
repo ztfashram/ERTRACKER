@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 import { Request } from '@prisma/client'
-import { MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal, ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
@@ -11,10 +11,9 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { DeleteAlertDialog } from './deleteAlertDialog'
-import { EditDropdownMenuItem } from './editDropdownMenuItem'
+import { DeleteAlertDialog } from '../app/requests/_components/deleteAlertDialog'
+import { EditDropdownMenuItem } from '../app/requests/_components/editDropdownMenuItem'
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 
 type EnrichedRequests = Request & { username: string }
@@ -22,11 +21,25 @@ type EnrichedRequests = Request & { username: string }
 export const columns: ColumnDef<EnrichedRequests>[] = [
     {
         accessorKey: 'title',
-        header: 'Title',
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Title
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: 'customer',
-        header: 'Customer',
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Customer
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
         cell: ({ row }) => <div className='truncate max-w-[120px]'>{row.getValue('customer')}</div>,
         // TODO: Wrap with tool tip
     },
@@ -37,12 +50,26 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
     },
     {
         accessorKey: 'type',
-        header: 'Type',
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Type
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
         cell: ({ row }) => <div className=''>{(row.getValue('type') as string).replace('_', ' ')}</div>,
     },
     {
         accessorKey: 'status',
-        header: 'Status',
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Status
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const status = (row.getValue('status') as string).replace('_', ' ')
             function bgColor(status: string) {
@@ -58,6 +85,12 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
             }
             return <Badge className={bgColor(status)}>{status}</Badge>
         },
+        filterFn: (row, status, value) => {
+            console.log('row', row)
+            console.log('value', value)
+            console.log('status', status)
+            return value.includes(row.getValue('status'))
+        },
     },
     {
         accessorKey: 'username',
@@ -71,22 +104,36 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
     },
     {
         accessorKey: 'createdAt',
-        header: () => <div className='text-right'>Created At</div>,
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Created At
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const date = row.getValue('createdAt')
             const formattedDate = new Date(date as string).toLocaleDateString('en-AU')
 
-            return <div className='text-right font-medium'>{formattedDate}</div>
+            return <div className='font-medium'>{formattedDate}</div>
         },
     },
     {
         accessorKey: 'updatedAt',
-        header: () => <div className='text-right'>Updated At</div>,
+        header: ({ column }) => {
+            return (
+                <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+                    Updated At
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
             const date = row.getValue('updatedAt')
             const formattedDate = new Date(date as string).toLocaleDateString('en-AU')
 
-            return <div className='text-right font-medium'>{formattedDate}</div>
+            return <div className='font-medium'>{formattedDate}</div>
         },
     },
     {

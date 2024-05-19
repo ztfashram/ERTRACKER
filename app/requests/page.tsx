@@ -1,6 +1,6 @@
 import prisma from '@/prisma/client'
-import RequestsTable from './_components/requests-table'
-import { columns } from './_components/columns'
+import RequestsTable from '../../components/requests-table'
+import { columns } from '../../components/columns'
 import { getUsernames } from '@/utils/getUsernames'
 import AddRequestButton from './_components/add-request-button'
 
