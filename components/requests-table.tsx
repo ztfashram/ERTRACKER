@@ -1,10 +1,9 @@
 'use client'
-import React from 'react'
+import { useState } from 'react'
 import {
     ColumnDef,
     ColumnFiltersState,
     SortingState,
-    VisibilityState,
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
@@ -25,22 +24,19 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function RequestsTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [sorting, setSorting] = React.useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [sorting, setSorting] = useState<SortingState>([])
 
     const table = useReactTable({
         data,
         columns,
         state: {
             sorting,
-            columnVisibility,
             columnFilters,
         },
         enableRowSelection: true,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
-        onColumnVisibilityChange: setColumnVisibility,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),

@@ -15,6 +15,7 @@ import { DeleteAlertDialog } from '../app/requests/_components/deleteAlertDialog
 import { EditDropdownMenuItem } from '../app/requests/_components/editDropdownMenuItem'
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
+import { statuses } from './request-table-toolbar'
 
 type EnrichedRequests = Request & { username: string }
 
@@ -71,7 +72,8 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
             )
         },
         cell: ({ row }) => {
-            const status = (row.getValue('status') as string).replace('_', ' ')
+            const status = statuses.find((status) => status.value === row.getValue('status'))
+            if (!status) return null
             function bgColor(status: string) {
                 if (status === 'Cancelled') {
                     return 'bg-red-500 hover:bg-red-500/80'
@@ -83,13 +85,10 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
                     return 'bg-green-500 hover:bg-green-500/80'
                 }
             }
-            return <Badge className={bgColor(status)}>{status}</Badge>
+            return <Badge className={bgColor(status.label as string)}>{status.value}</Badge>
         },
         filterFn: (row, status, value) => {
-            console.log('row', row)
-            console.log('value', value)
-            console.log('status', status)
-            return value.includes(row.getValue('status'))
+            return value.includes(row.getValue(status))
         },
     },
     {

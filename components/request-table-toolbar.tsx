@@ -8,19 +8,19 @@ import { X } from 'lucide-react'
 
 export const statuses = [
     {
-        value: 'open',
+        value: 'Open',
         label: 'Open',
     },
     {
-        value: 'completed',
+        value: 'Completed',
         label: 'Completed',
     },
     {
-        value: 'cancelled',
+        value: 'Cancelled',
         label: 'Cancelled',
     },
     {
-        value: 'in progress',
+        value: 'In_Progress',
         label: 'In Progress',
     },
 ]
