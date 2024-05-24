@@ -32,7 +32,6 @@ export function RequestTableFacetedFilter<TData, TValue>({
 }: RequestTableFacetedFilterProps<TData, TValue>) {
     const facets = column?.getFacetedUniqueValues()
     const selectedValues = new Set(column?.getFilterValue() as string[])
-    console.log('selected values', selectedValues)
     return (
         <Popover>
             <PopoverTrigger asChild>

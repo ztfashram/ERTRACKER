@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 
 export function EditDropdownMenuItem({ id }: { id: string }) {
     const router = useRouter()
-    console.log(id)
     return (
         <DropdownMenuItem
             onClick={() => {
