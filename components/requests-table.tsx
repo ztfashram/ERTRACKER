@@ -91,5 +91,3 @@ export function RequestsTable<TData, TValue>({ columns, data }: DataTableProps<T
         </div>
     )
 }
-
-export default RequestsTable

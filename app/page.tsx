@@ -1,8 +1,8 @@
 import prisma from '@/prisma/client'
-import RequestsTable from '@/components/requests-table'
+import { RequestsTable } from '@/components/requests-table'
 import { columns } from '@/components/columns'
 import { getUsernames } from '@/utils/getUsernames'
-import AddRequestButton from '@/app/requests/_components/add-request-button'
+import { AddRequestButton } from '@/app/requests/_components/add-request-button'
 import { auth } from '@clerk/nextjs/server'
 
 async function getUserRequests() {
