@@ -15,6 +15,8 @@ import Spinner from '@/components/spinner'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
 
+const typeArray = Object.entries(Type_of_Request).map(([key, value]) => ({ key, value }))
+
 export function RequestForm({ request }: { request: Request | null }) {
     const router = useRouter()
     const isAddRequest = !request?.id
@@ -65,19 +67,11 @@ export function RequestForm({ request }: { request: Request | null }) {
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value={Type_of_Request.Manufacturing_Drawing}>
-                                        {Type_of_Request.Manufacturing_Drawing}
-                                    </SelectItem>
-                                    <SelectItem value={Type_of_Request.Basic_Drawing}>
-                                        {Type_of_Request.Basic_Drawing}
-                                    </SelectItem>
-                                    <SelectItem value={Type_of_Request.Drawing_Update}>
-                                        {Type_of_Request.Drawing_Update}
-                                    </SelectItem>
-                                    <SelectItem value={Type_of_Request.Technical_Enquiry}>
-                                        {Type_of_Request.Technical_Enquiry}
-                                    </SelectItem>
-                                    <SelectItem value={Type_of_Request.Other}>{Type_of_Request.Other}</SelectItem>
+                                    {typeArray.map((request) => (
+                                        <SelectItem value={request.value} key={request.key}>
+                                            {request.value}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                             <FormMessage />
