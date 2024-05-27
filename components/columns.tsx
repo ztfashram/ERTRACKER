@@ -16,6 +16,7 @@ import { EditDropdownMenuItem } from '../app/requests/_components/editDropdownMe
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { statuses } from './request-table-toolbar'
+import { Suspense } from 'react'
 
 type EnrichedRequests = Request & { username: string }
 
@@ -115,7 +116,11 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
             const date = row.getValue('createdAt')
             const formattedDate = new Date(date as string).toLocaleDateString('en-AU')
 
-            return <div className='font-medium'>{formattedDate}</div>
+            return (
+                <Suspense fallback={<div>Loading...</div>}>
+                    <div className='font-medium'>{formattedDate}</div>
+                </Suspense>
+            )
         },
     },
     {
@@ -132,7 +137,11 @@ export const columns: ColumnDef<EnrichedRequests>[] = [
             const date = row.getValue('updatedAt')
             const formattedDate = new Date(date as string).toLocaleDateString('en-AU')
 
-            return <div className='font-medium'>{formattedDate}</div>
+            return (
+                <Suspense fallback={<div>Loading...</div>}>
+                    <div className='font-medium'>{formattedDate}</div>
+                </Suspense>
+            )
         },
     },
     {
