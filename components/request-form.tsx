@@ -69,7 +69,7 @@ export function RequestForm({ request }: { request: Request | null }) {
                                 <SelectContent>
                                     {typeArray.map((request) => (
                                         <SelectItem value={request.value} key={request.key}>
-                                            {request.value}
+                                            {request.value.replace('_', ' ')}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
